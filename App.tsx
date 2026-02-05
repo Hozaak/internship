@@ -38,42 +38,114 @@ const App: React.FC = () => {
     setUser(null);
   };
 
-  if (isLoading) {
-    return (
-      <div className="fixed inset-0 bg-indigo-600 flex flex-col items-center justify-center z-[100] animate-in fade-in duration-500">
-        <div className="relative">
-          <div className="w-24 h-24 bg-white rounded-3xl flex items-center justify-center shadow-2xl animate-bounce">
-             <img 
-               src="/images/logo.jpg" 
-               className="w-16 h-16 rounded-xl object-cover" 
-               alt="Internadda Logo" 
-             />
-          </div>
-          <div className="absolute -inset-4 border-4 border-white/30 rounded-[2rem] animate-ping"></div>
-        </div>
-        
-        <h2 className="mt-8 text-white font-black text-3xl tracking-widest animate-pulse">
-          INTERNADDA
-        </h2>
-        <p className="text-indigo-100 text-sm mt-2 font-medium">Launching Your Career...</p>
-        
-        <div className="mt-6 w-48 h-1.5 bg-indigo-800 rounded-full overflow-hidden">
-          <div className="h-full bg-white animate-loading-bar"></div>
-        </div>
+  // Replace the loading section in App.tsx with:
 
-        <style>{`
-          @keyframes loading-bar {
-            0% { width: 0%; transform: translateX(-100%); }
-            50% { width: 100%; transform: translateX(0); }
-            100% { width: 0%; transform: translateX(100%); }
-          }
-          .animate-loading-bar {
-            animation: loading-bar 2s ease-in-out infinite;
-          }
-        `}</style>
+if (isLoading) {
+  return (
+    <div className="fixed inset-0 bg-gradient-to-br from-indigo-600 via-purple-600 to-blue-600 flex flex-col items-center justify-center z-[100] animate-in fade-in duration-500 overflow-hidden">
+      {/* Animated background elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute -top-1/2 -left-1/2 w-full h-full bg-gradient-to-r from-transparent via-white/10 to-transparent animate-shimmer"></div>
       </div>
-    );
-  }
+      
+      <div className="relative z-10 text-center">
+        {/* Logo with pulsing animation */}
+        <div className="relative mb-8">
+          <div className="w-32 h-32 bg-white/10 backdrop-blur-sm rounded-3xl flex items-center justify-center shadow-2xl mx-auto animate-pulse-slow">
+            <div className="w-24 h-24 bg-white rounded-2xl flex items-center justify-center shadow-inner">
+              <div className="w-16 h-16 bg-gradient-to-br from-indigo-500 to-blue-500 rounded-xl flex items-center justify-center text-white font-bold text-2xl">
+                IA
+              </div>
+            </div>
+          </div>
+          {/* Multiple animated rings */}
+          <div className="absolute -inset-8 border-4 border-white/20 rounded-[3rem] animate-ping-slow"></div>
+          <div className="absolute -inset-12 border-4 border-white/10 rounded-[4rem] animate-ping-slower"></div>
+        </div>
+        
+        {/* Text with gradient animation */}
+        <h1 className="text-5xl font-black tracking-widest mb-4">
+          <span className="bg-gradient-to-r from-white via-cyan-100 to-white bg-clip-text text-transparent animate-gradient">
+            INTERNADDA
+          </span>
+        </h1>
+        
+        <p className="text-white/80 text-sm font-medium mb-8 animate-pulse">
+          Launching Your Career Journey...
+        </p>
+        
+        {/* Progress bar */}
+        <div className="w-64 h-2 bg-white/20 rounded-full overflow-hidden mx-auto">
+          <div className="h-full bg-gradient-to-r from-cyan-400 via-white to-blue-400 animate-loading-bar rounded-full"></div>
+        </div>
+        
+        {/* Stats counter */}
+        <div className="mt-8 flex justify-center gap-8 text-white/70 text-xs">
+          <div className="text-center">
+            <div className="text-lg font-bold text-white">50+</div>
+            <div>Companies</div>
+          </div>
+          <div className="text-center">
+            <div className="text-lg font-bold text-white">1000+</div>
+            <div>Interns Placed</div>
+          </div>
+          <div className="text-center">
+            <div className="text-lg font-bold text-white">95%</div>
+            <div>Success Rate</div>
+          </div>
+        </div>
+      </div>
+
+      <style>{`
+        @keyframes loading-bar {
+          0% { width: 0%; transform: translateX(-100%); }
+          50% { width: 100%; transform: translateX(0); }
+          100% { width: 0%; transform: translateX(100%); }
+        }
+        @keyframes gradient {
+          0%, 100% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+        }
+        @keyframes ping-slow {
+          0%, 100% { transform: scale(1); opacity: 1; }
+          50% { transform: scale(1.05); opacity: 0; }
+        }
+        @keyframes ping-slower {
+          0%, 100% { transform: scale(1); opacity: 1; }
+          50% { transform: scale(1.1); opacity: 0; }
+        }
+        @keyframes pulse-slow {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0.8; }
+        }
+        @keyframes shimmer {
+          0% { transform: translateX(-100%) rotate(45deg); }
+          100% { transform: translateX(100%) rotate(45deg); }
+        }
+        .animate-loading-bar {
+          animation: loading-bar 2s ease-in-out infinite;
+          background-size: 200% 100%;
+        }
+        .animate-gradient {
+          animation: gradient 3s ease infinite;
+          background-size: 200% 200%;
+        }
+        .animate-ping-slow {
+          animation: ping-slow 3s cubic-bezier(0, 0, 0.2, 1) infinite;
+        }
+        .animate-ping-slower {
+          animation: ping-slower 4s cubic-bezier(0, 0, 0.2, 1) infinite;
+        }
+        .animate-pulse-slow {
+          animation: pulse-slow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        .animate-shimmer {
+          animation: shimmer 2s infinite linear;
+        }
+      `}</style>
+    </div>
+  );
+}
 
   return (
     <Router>
