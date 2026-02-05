@@ -19,6 +19,7 @@ import AboutUs from './pages/AboutUs';
 import PaymentPage from './pages/PaymentPage';
 import TeamPage from './pages/TeamPage';
 import { UserProfile } from './types';
+import OfferLetterPage from './pages/OfferLetterPage';
 
 
 const App: React.FC = () => {
@@ -118,6 +119,7 @@ const App: React.FC = () => {
             <Route path="/profile" element={user ? <Profile /> : <Navigate to="/login" />} />
             <Route path="/settings" element={user ? <Settings /> : <Navigate to="/login" />} />
             <Route path="/internships" element={<InternshipsPage />} />
+            <Route path="/offer-letter" element={<OfferLetterPage />} />
           </Routes>
         </main>
         <Footer />
