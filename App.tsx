@@ -9,7 +9,6 @@ import InternshipDetail from './pages/InternshipDetail';
 import TestEngine from './pages/TestEngine';
 import ResultPage from './pages/ResultPage';
 import Dashboard from './pages/Dashboard';
-import AdminPanel from './pages/AdminPanel';
 import { UserProfile } from './types';
 
 const App: React.FC = () => {
