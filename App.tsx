@@ -1,17 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import { HashRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import Header from './components/Header';
-import Footer from './components/Footer';
-import Home from './pages/Home';
-import AuthPage from './pages/AuthPage';
-import InternshipDetail from './pages/InternshipDetail';
-import TestEngine from './pages/TestEngine';
-import ResultPage from './pages/ResultPage';
-import Dashboard from './pages/Dashboard';
-import Tests from './pages/Tests';
-import Profile from './pages/Profile';
-import Settings from './pages/Settings';
-import { UserProfile } from './types';
+import React, { useState, useEffect } from "react";
+import { HashRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
+import Home from "./pages/Home";
+import AuthPage from "./pages/AuthPage";
+import InternshipDetail from "./pages/InternshipDetail";
+import TestEngine from "./pages/TestEngine";
+import ResultPage from "./pages/ResultPage";
+import Dashboard from "./pages/Dashboard";
+import Tests from "./pages/Tests";
+import Profile from "./pages/Profile";
+import Settings from "./pages/Settings";
+import { UserProfile } from "./types";
 
 const App: React.FC = () => {
   const [user, setUser] = useState<UserProfile | null>(null);
@@ -19,86 +19,75 @@ const App: React.FC = () => {
 
   useEffect(() => {
     const initApp = async () => {
-      const savedUser = localStorage.getItem('user');
+      const savedUser = localStorage.getItem("user");
       if (savedUser) setUser(JSON.parse(savedUser));
-      await new Promise(res => setTimeout(res, 1400));
+
+      // Premium loading delay
+      await new Promise((res) => setTimeout(res, 1200));
       setIsLoading(false);
     };
+
     initApp();
   }, []);
 
-if (isLoading) {
-  return (
-    <div className="fixed inset-0 bg-white flex items-center justify-center z-[100] overflow-hidden">
+  if (isLoading) {
+    return (
+      <div className="fixed inset-0 bg-white flex flex-col items-center justify-center z-[9999]">
+        {/* LOGO */}
+        <div className="mb-10 relative">
+          <img
+            src="https://drive.google.com/thumbnail?id=117kBU2vFBqEXbrf2q7Kua8R7BSbUNCsa&sz=w400"
+            alt="Internadda Logo"
+            className="w-24 h-24 object-contain drop-shadow-xl animate-float"
+          />
+        </div>
 
-      {/* Soft moving gradients */}
-      <div className="absolute w-[600px] h-[600px] bg-blue-200/40 blur-[160px] rounded-full -top-40 -left-40 animate-float1" />
-      <div className="absolute w-[500px] h-[500px] bg-indigo-200/40 blur-[160px] rounded-full bottom-[-200px] right-[-200px] animate-float2" />
+        {/* RUNNING LOADER */}
+        <div className="loader"></div>
 
-      {/* Center Logo Container */}
-      <div className="relative flex items-center justify-center">
-        {/* Glow Ring */}
-        <div className="absolute w-44 h-44 border-4 border-blue-300/40 rounded-full animate-spin-slow"></div>
-        <div className="absolute w-32 h-32 border-2 border-indigo-300/40 rounded-full animate-spin-reverse"></div>
+        {/* CSS */}
+        <style>{`
+          .loader {
+            width: 90px;
+            height: 14px;
+            display: grid;
+            box-shadow: 0 3px 0 #2563eb;
+          }
+          .loader:before,
+          .loader:after {
+            content: "";
+            grid-area: 1/1;
+            background:
+              radial-gradient(circle closest-side, var(--c, #2563eb) 92%, #0000)
+              0 0 / calc(100%/4) 100%;
+            animation: l4 1s infinite linear;
+          }
+          .loader:after {
+            --c: #1e40af;
+            background-color: #ffffff;
+            box-shadow: 0 -2px 0 0 #2563eb;
+            clip-path: inset(-2px calc(50% - 10px));
+          }
+          @keyframes l4 {
+            100% {
+              background-position: calc(100%/3) 0;
+            }
+          }
 
-        {/* Logo */}
-        <img
-          src="https://drive.google.com/thumbnail?id=117kBU2vFBqEXbrf2q7Kua8R7BSbUNCsa&sz=w400"
-          alt="Internadda Logo"
-          className="relative w-28 h-28 object-contain animate-logo-float drop-shadow-[0_20px_40px_rgba(59,130,246,0.25)]"
-        />
+          @keyframes float {
+            0%,100% { transform: translateY(0); }
+            50% { transform: translateY(-6px); }
+          }
+          .animate-float {
+            animation: float 2.2s ease-in-out infinite;
+          }
+        `}</style>
       </div>
-
-      <style>{`
-        @keyframes float1 {
-          0% { transform:translate(0,0); }
-          50% { transform:translate(40px,30px); }
-          100% { transform:translate(0,0); }
-        }
-
-        @keyframes float2 {
-          0% { transform:translate(0,0); }
-          50% { transform:translate(-40px,-30px); }
-          100% { transform:translate(0,0); }
-        }
-
-        @keyframes logoFloat {
-          0% { transform:translateY(0px) scale(0.95); }
-          50% { transform:translateY(-10px) scale(1); }
-          100% { transform:translateY(0px) scale(0.95); }
-        }
-
-        @keyframes spinSlow {
-          from { transform:rotate(0deg); }
-          to { transform:rotate(360deg); }
-        }
-
-        @keyframes spinReverse {
-          from { transform:rotate(360deg); }
-          to { transform:rotate(0deg); }
-        }
-
-        .animate-float1 { animation: float1 10s ease-in-out infinite; }
-        .animate-float2 { animation: float2 12s ease-in-out infinite; }
-
-        .animate-logo-float {
-          animation: logoFloat 2.8s ease-in-out infinite;
-        }
-
-        .animate-spin-slow {
-          animation: spinSlow 12s linear infinite;
-        }
-
-        .animate-spin-reverse {
-          animation: spinReverse 9s linear infinite;
-        }
-      `}</style>
-    </div>
-  );
-}
+    );
+  }
 
   const handleLogout = () => {
-    localStorage.removeItem('user');
+    localStorage.removeItem("user");
     setUser(null);
   };
 
