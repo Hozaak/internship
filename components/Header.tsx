@@ -14,14 +14,19 @@ const Header: React.FC<HeaderProps> = ({ user, onLogout }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 10);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
+// Inside the Header component
+useEffect(() => {
+  if (mobileMenuOpen) {
+    document.body.style.overflow = 'hidden';
+  } else {
+    document.body.style.overflow = 'unset';
+  }
+  
+  // Cleanup on unmount
+  return () => {
+    document.body.style.overflow = 'unset';
+  };
+}, [mobileMenuOpen]);
   const navItems = [
     { label: 'Home', path: '/' },
     { label: 'Internships', path: '/internships' },
