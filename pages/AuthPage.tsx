@@ -79,3 +79,6 @@ const AuthPage: React.FC<{ mode: 'login' | 'signup', setUser: (user: any) => voi
     </div>
   );
 };
+
+
+export default AuthPage;
