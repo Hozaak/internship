@@ -115,6 +115,9 @@ const App: React.FC = () => {
             <Route path="/test/practice/:id" element={<TestEngine type="practice" />} />
             <Route path="/test/real/:id" element={<TestEngine type="real" />} />
             <Route path="/result/:id" element={<ResultPage />} />
+            <Route path="/profile" element={user ? <Profile /> : <Navigate to="/login" />} />
+            <Route path="/settings" element={user ? <Settings /> : <Navigate to="/login" />} />
+            <Route path="/internships" element={<InternshipsPage />} />
           </Routes>
         </main>
         <Footer />
