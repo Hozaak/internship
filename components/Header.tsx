@@ -14,19 +14,29 @@ const Header: React.FC<HeaderProps> = ({ user, onLogout }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
-// Inside the Header component
-useEffect(() => {
-  if (mobileMenuOpen) {
-    document.body.style.overflow = 'hidden';
-  } else {
-    document.body.style.overflow = 'unset';
-  }
-  
-  // Cleanup on unmount
-  return () => {
-    document.body.style.overflow = 'unset';
-  };
-}, [mobileMenuOpen]);
+  // Handle scroll effect for sticky header
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 10);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // FIX: Prevent body scroll when mobile menu is open
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    
+    // Cleanup on unmount
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [mobileMenuOpen]);
+
   const navItems = [
     { label: 'Home', path: '/' },
     { label: 'Internships', path: '/internships' },
@@ -54,14 +64,12 @@ useEffect(() => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between">
             
-            {/* Logo Section - Enhanced */}
+            {/* Logo Section */}
             <div 
               onClick={() => navigate('/')}
               className="flex items-center gap-2 cursor-pointer group"
             >
-              {/* Logo Image */}
               <div className="relative">
-            
                   <img 
                     src="https://drive.google.com/thumbnail?id=117kBU2vFBqEXbrf2q7Kua8R7BSbUNCsa&sz=w400"
                     alt="Internadda"
@@ -75,9 +83,6 @@ useEffect(() => {
                   />
                 </div>
 
-    
-
-              {/* Brand Name - Always Visible */}
               <div className="flex flex-col">
                 <span className="font-extrabold text-lg sm:text-xl text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 tracking-tight">
                   Internadda
@@ -110,7 +115,6 @@ useEffect(() => {
 
             {/* Desktop Actions */}
             <div className="hidden lg:flex items-center gap-4">
-              {/* Trust Badge */}
               <div className="trust-badge px-3 py-1.5 rounded-lg text-xs font-bold shadow-sm">
                 MSME Certified
               </div>
@@ -144,10 +148,10 @@ useEffect(() => {
                         <div className="text-xs text-slate-500 truncate">{user.email}</div>
                       </div>
                       <div className="py-2">
-                        <Link to="/dashboard" className="block px-4 py-3 text-sm text-slate-700 hover:bg-slate-50">Dashboard</Link>
-                        <Link to="/profile" className="block px-4 py-3 text-sm text-slate-700 hover:bg-slate-50">Profile</Link>
-                        <Link to="/settings" className="block px-4 py-3 text-sm text-slate-700 hover:bg-slate-50">Settings</Link>
-                        <button onClick={onLogout} className="block w-full text-left px-4 py-3 text-sm text-red-600 hover:bg-red-50 border-t border-slate-100 mt-2">Logout</button>
+                        <Link to="/dashboard" onClick={() => setDropdownOpen(false)} className="block px-4 py-3 text-sm text-slate-700 hover:bg-slate-50">Dashboard</Link>
+                        <Link to="/profile" onClick={() => setDropdownOpen(false)} className="block px-4 py-3 text-sm text-slate-700 hover:bg-slate-50">Profile</Link>
+                        <Link to="/settings" onClick={() => setDropdownOpen(false)} className="block px-4 py-3 text-sm text-slate-700 hover:bg-slate-50">Settings</Link>
+                        <button onClick={() => { onLogout(); setDropdownOpen(false); }} className="block w-full text-left px-4 py-3 text-sm text-red-600 hover:bg-red-50 border-t border-slate-100 mt-2">Logout</button>
                       </div>
                     </div>
                   )}
@@ -162,14 +166,13 @@ useEffect(() => {
 
             {/* Mobile Menu Button */}
             <div className="lg:hidden flex items-center gap-3">
-              {/* MSME Badge for Mobile */}
               <div className="trust-badge px-2 py-1 rounded text-[10px] font-bold">
                 MSME
               </div>
               
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="relative w-10 h-10 flex flex-col items-center justify-center"
+                className="relative w-10 h-10 flex flex-col items-center justify-center z-50"
                 aria-label="Menu"
               >
                 <span className={`absolute w-6 h-0.5 bg-slate-700 rounded-full transition-all duration-300 ${mobileMenuOpen ? 'rotate-45 translate-y-0' : '-translate-y-1.5'}`}></span>
@@ -180,20 +183,17 @@ useEffect(() => {
           </div>
         </div>
 
-        {/* Mobile Menu */}
+        {/* Mobile Menu Panel */}
         <div className={`lg:hidden fixed inset-0 z-40 transition-all duration-300 ${mobileMenuOpen ? 'visible' : 'invisible'}`}>
-          {/* Backdrop */}
           <div 
             className={`absolute inset-0 bg-black transition-opacity duration-300 ${mobileMenuOpen ? 'opacity-20' : 'opacity-0'}`}
             onClick={() => setMobileMenuOpen(false)}
           ></div>
           
-          {/* Menu Panel */}
           <div 
             className={`absolute right-0 top-0 h-full w-80 bg-white shadow-2xl transform transition-transform duration-300 ${mobileMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Menu Header */}
             <div className="p-6 border-b border-slate-100 bg-gradient-to-r from-indigo-50 to-purple-50">
               <div className="flex items-center justify-between mb-8">
                 <div className="flex items-center gap-3">
@@ -213,7 +213,6 @@ useEffect(() => {
                 </button>
               </div>
 
-              {/* User Info or Auth */}
               {user ? (
                 <div className="flex items-center gap-3 p-4 bg-white rounded-xl shadow-sm">
                   <div className="w-12 h-12 rounded-full bg-gradient-to-br from-indigo-100 to-blue-100 flex items-center justify-center">
@@ -246,7 +245,6 @@ useEffect(() => {
               )}
             </div>
 
-            {/* Menu Items */}
             <div className="p-4 space-y-1 max-h-[calc(100vh-200px)] overflow-y-auto">
               {navItems.map((item) => {
                 const isActive = location.pathname === item.path;
@@ -266,15 +264,14 @@ useEffect(() => {
                 );
               })}
               
-              {/* Additional Mobile Links */}
               <div className="pt-4 mt-4 border-t border-slate-100">
-                <Link to="/dashboard" className="block px-4 py-3.5 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-50">
+                <Link to="/dashboard" onClick={() => setMobileMenuOpen(false)} className="block px-4 py-3.5 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-50">
                   Dashboard
                 </Link>
-                <Link to="/profile" className="block px-4 py-3.5 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-50">
+                <Link to="/profile" onClick={() => setMobileMenuOpen(false)} className="block px-4 py-3.5 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-50">
                   Profile
                 </Link>
-                <Link to="/settings" className="block px-4 py-3.5 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-50">
+                <Link to="/settings" onClick={() => setMobileMenuOpen(false)} className="block px-4 py-3.5 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-50">
                   Settings
                 </Link>
                 {user && (
@@ -291,7 +288,6 @@ useEffect(() => {
               </div>
             </div>
 
-            {/* Trust Section in Mobile Menu */}
             <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-slate-100 bg-white">
               <div className="text-center">
                 <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-gradient-to-r from-green-50 to-emerald-50 border border-green-100">
