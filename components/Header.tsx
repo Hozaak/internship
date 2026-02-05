@@ -1,4 +1,4 @@
-
+//internship/internship-main/components/Header.tsx
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { UserProfile } from '../types';
@@ -14,18 +14,21 @@ const Header: React.FC<HeaderProps> = ({ user, onLogout }) => {
   const navItems = [
     { label: 'Home', path: '/' },
     { label: 'Courses', path: '/courses' },
-    { label: 'Internships', path: '/', active: true },
+    { label: 'Internships', path: '/', active: location.pathname === '/' },
     { label: 'Remote Jobs', path: '/jobs' },
     { label: 'About Us', path: '/about' },
-    { label: 'More', path: '/more' },
   ];
 
   return (
-    <header className="sticky top-0 z-50 bg-white border-b border-slate-100 shadow-sm px-4 md:px-8">
+    <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200/50 shadow-sm px-4 md:px-8">
       <div className="max-w-7xl mx-auto flex items-center justify-between h-20">
-        <Link to="/" className="flex items-center gap-2">
-          <div className="w-10 h-10 bg-indigo-600 rounded-full flex items-center justify-center text-white font-bold text-xl shadow-indigo-200 shadow-lg">ia</div>
-          <span className="text-2xl font-bold bg-gradient-to-r from-indigo-800 to-indigo-600 bg-clip-text text-transparent">Internadda</span>
+        <Link to="/" className="flex items-center gap-3 group">
+          <div className="w-12 h-12 overflow-hidden rounded-xl shadow-lg group-hover:scale-105 transition-transform">
+            <img src="../images/logo.jpg" alt="Internadda Logo" className="w-full h-full object-cover" />
+          </div>
+          <span className="text-2xl font-black bg-gradient-to-r from-indigo-900 via-indigo-600 to-blue-500 bg-clip-text text-transparent">
+            Internadda
+          </span>
         </Link>
 
         <nav className="hidden md:flex items-center gap-8">
@@ -33,8 +36,8 @@ const Header: React.FC<HeaderProps> = ({ user, onLogout }) => {
             <Link
               key={item.label}
               to={item.path}
-              className={`text-sm font-medium transition-colors hover:text-indigo-600 ${
-                item.active ? 'text-indigo-600 border-b-2 border-indigo-600 py-1' : 'text-slate-600'
+              className={`text-sm font-bold tracking-tight transition-all hover:text-indigo-600 ${
+                item.active ? 'text-indigo-600' : 'text-slate-500'
               }`}
             >
               {item.label}
@@ -42,15 +45,18 @@ const Header: React.FC<HeaderProps> = ({ user, onLogout }) => {
           ))}
         </nav>
 
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-6">
           {user ? (
             <div className="flex items-center gap-4">
-              <Link to="/dashboard" className="text-sm font-medium text-slate-700 hover:text-indigo-600">
-                Hi, {user.name.split(' ')[0]}
+              <Link to="/dashboard" className="flex items-center gap-2 group">
+                <div className="w-8 h-8 bg-indigo-100 text-indigo-700 rounded-full flex items-center justify-center font-bold text-xs group-hover:bg-indigo-600 group-hover:text-white transition-colors">
+                  {user.name[0]}
+                </div>
+                <span className="text-sm font-bold text-slate-700 group-hover:text-indigo-600">Dashboard</span>
               </Link>
               <button 
                 onClick={onLogout}
-                className="text-xs text-red-500 hover:underline"
+                className="text-xs font-bold text-red-500 hover:text-red-700 uppercase tracking-tighter"
               >
                 Logout
               </button>
@@ -58,7 +64,7 @@ const Header: React.FC<HeaderProps> = ({ user, onLogout }) => {
           ) : (
             <Link 
               to="/login"
-              className="bg-indigo-600 text-white px-6 py-2.5 rounded-full text-sm font-semibold shadow-indigo-100 shadow-xl hover:bg-indigo-700 transition-all active:scale-95"
+              className="bg-slate-900 text-white px-8 py-3 rounded-2xl text-sm font-bold shadow-xl hover:bg-indigo-600 transition-all active:scale-95 hover:shadow-indigo-200"
             >
               Sign In
             </Link>
