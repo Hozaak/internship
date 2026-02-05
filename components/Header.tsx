@@ -24,7 +24,7 @@ const Header: React.FC<HeaderProps> = ({ user, onLogout }) => {
       <div className="max-w-7xl mx-auto flex items-center justify-between h-20">
         <Link to="/" className="flex items-center gap-3 group">
           <div className="w-12 h-12 overflow-hidden rounded-xl shadow-lg group-hover:scale-105 transition-transform">
-            <img src="../images/logo.jpg" alt="Internadda Logo" className="w-full h-full object-cover" />
+            <img src="images/logo.jpg" alt="Internadda Logo" className="w-full h-full object-cover" />
           </div>
           <span className="text-2xl font-black bg-gradient-to-r from-indigo-900 via-indigo-600 to-blue-500 bg-clip-text text-transparent">
             Internadda
