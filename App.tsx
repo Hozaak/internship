@@ -49,7 +49,7 @@ const App: React.FC = () => {
           {/* Logo Shoot-in effect */}
           <div className="w-24 h-24 bg-white rounded-3xl flex items-center justify-center shadow-2xl animate-bounce">
              <img 
-               src="images/logo.jpg" 
+               src="/images/logo.jpg" 
                className="w-16 h-16 rounded-xl object-cover" 
                alt="Internadda Logo" 
              />
