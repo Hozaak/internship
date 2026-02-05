@@ -70,17 +70,14 @@ const Header: React.FC<HeaderProps> = ({ user, onLogout }) => {
               className="flex items-center gap-2 cursor-pointer group"
             >
               <div className="relative">
-                  <img 
-                    src="https://drive.google.com/thumbnail?id=117kBU2vFBqEXbrf2q7Kua8R7BSbUNCsa&sz=w400"
-                    alt="Internadda"
-                    className="w-8 h-8 sm:w-10 sm:h-10 object-contain"
-                    onError={(e) => {
-                      const parent = e.currentTarget.parentElement;
-                      if (parent) {
-                        parent.innerHTML = '<span class="text-white font-bold text-lg">IA</span>';
-                      }
-                    }}
-                  />
+            <img 
+              src="https://lh3.googleusercontent.com/d/117kBU2vFBqEXbrf2q7Kua8R7BSbUNCsa"
+              alt="Internadda Logo" 
+              className="w-full h-full object-contain transform group-hover:scale-110 transition-transform duration-300"
+              onError={(e) => {
+                (e.target as HTMLImageElement).src = "https://via.placeholder.com/50?text=I";
+              }}
+            />
                 </div>
 
               <div className="flex flex-col">
