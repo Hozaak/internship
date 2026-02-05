@@ -27,45 +27,70 @@ const App: React.FC = () => {
     initApp();
   }, []);
 
- if (isLoading) {
+if (isLoading) {
   return (
-    <div className="fixed inset-0 bg-black flex items-center justify-center z-[100] overflow-hidden">
+    <div className="fixed inset-0 bg-white flex items-center justify-center z-[100] overflow-hidden">
 
-      {/* Deep ambient background */}
-      <div className="absolute w-[500px] h-[500px] bg-indigo-500/20 blur-[140px] rounded-full -top-40 -left-40" />
-      <div className="absolute w-[400px] h-[400px] bg-blue-500/20 blur-[140px] rounded-full bottom-[-150px] right-[-150px]" />
+      {/* Soft moving gradients */}
+      <div className="absolute w-[600px] h-[600px] bg-blue-200/40 blur-[160px] rounded-full -top-40 -left-40 animate-float1" />
+      <div className="absolute w-[500px] h-[500px] bg-indigo-200/40 blur-[160px] rounded-full bottom-[-200px] right-[-200px] animate-float2" />
 
-      {/* ICONIC LOGO ONLY */}
+      {/* Center Logo Container */}
       <div className="relative flex items-center justify-center">
-        {/* Soft pulse glow */}
-        <div className="absolute w-40 h-40 bg-indigo-500/30 blur-[100px] rounded-full animate-glow-pulse"></div>
+        {/* Glow Ring */}
+        <div className="absolute w-44 h-44 border-4 border-blue-300/40 rounded-full animate-spin-slow"></div>
+        <div className="absolute w-32 h-32 border-2 border-indigo-300/40 rounded-full animate-spin-reverse"></div>
 
         {/* Logo */}
         <img
           src="https://drive.google.com/thumbnail?id=117kBU2vFBqEXbrf2q7Kua8R7BSbUNCsa&sz=w400"
           alt="Internadda Logo"
-          className="relative w-28 h-28 object-contain animate-logo-iconic drop-shadow-[0_30px_55px_rgba(0,0,0,0.8)]"
+          className="relative w-28 h-28 object-contain animate-logo-float drop-shadow-[0_20px_40px_rgba(59,130,246,0.25)]"
         />
       </div>
 
       <style>{`
-        @keyframes logoIconic {
-          0%   { opacity:0; transform:scale(0.6) rotate(-6deg); }
-          60%  { opacity:1; transform:scale(1.08) rotate(1deg); }
-          100% { opacity:1; transform:scale(1) rotate(0deg); }
+        @keyframes float1 {
+          0% { transform:translate(0,0); }
+          50% { transform:translate(40px,30px); }
+          100% { transform:translate(0,0); }
         }
 
-        @keyframes glowPulse {
-          0%,100% { opacity:0.6; transform:scale(1); }
-          50%     { opacity:1; transform:scale(1.15); }
+        @keyframes float2 {
+          0% { transform:translate(0,0); }
+          50% { transform:translate(-40px,-30px); }
+          100% { transform:translate(0,0); }
         }
 
-        .animate-logo-iconic {
-          animation: logoIconic 1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        @keyframes logoFloat {
+          0% { transform:translateY(0px) scale(0.95); }
+          50% { transform:translateY(-10px) scale(1); }
+          100% { transform:translateY(0px) scale(0.95); }
         }
 
-        .animate-glow-pulse {
-          animation: glowPulse 2.5s ease-in-out infinite;
+        @keyframes spinSlow {
+          from { transform:rotate(0deg); }
+          to { transform:rotate(360deg); }
+        }
+
+        @keyframes spinReverse {
+          from { transform:rotate(360deg); }
+          to { transform:rotate(0deg); }
+        }
+
+        .animate-float1 { animation: float1 10s ease-in-out infinite; }
+        .animate-float2 { animation: float2 12s ease-in-out infinite; }
+
+        .animate-logo-float {
+          animation: logoFloat 2.8s ease-in-out infinite;
+        }
+
+        .animate-spin-slow {
+          animation: spinSlow 12s linear infinite;
+        }
+
+        .animate-spin-reverse {
+          animation: spinReverse 9s linear infinite;
         }
       `}</style>
     </div>
