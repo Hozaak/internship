@@ -27,39 +27,50 @@ const App: React.FC = () => {
     initApp();
   }, []);
 
-  if (isLoading) {
-    return (
-      <div className="fixed inset-0 bg-black flex items-center justify-center z-[100] overflow-hidden">
+ if (isLoading) {
+  return (
+    <div className="fixed inset-0 bg-black flex items-center justify-center z-[100] overflow-hidden">
 
-        {/* Ambient depth */}
-        <div className="absolute w-[600px] h-[600px] bg-indigo-500/20 blur-[140px] rounded-full top-[-250px] left-[-250px]" />
-        <div className="absolute w-[500px] h-[500px] bg-blue-500/20 blur-[140px] rounded-full bottom-[-220px] right-[-220px]" />
+      {/* Deep ambient background */}
+      <div className="absolute w-[500px] h-[500px] bg-indigo-500/20 blur-[140px] rounded-full -top-40 -left-40" />
+      <div className="absolute w-[400px] h-[400px] bg-blue-500/20 blur-[140px] rounded-full bottom-[-150px] right-[-150px]" />
 
-        {/* Iconic Logo Moment */}
-        <div className="relative z-10 flex items-center justify-center">
-          <div className="absolute w-44 h-44 bg-indigo-500/35 blur-[90px] rounded-full"></div>
+      {/* ICONIC LOGO ONLY */}
+      <div className="relative flex items-center justify-center">
+        {/* Soft pulse glow */}
+        <div className="absolute w-40 h-40 bg-indigo-500/30 blur-[100px] rounded-full animate-glow-pulse"></div>
 
-          <img
-            src="https://drive.google.com/thumbnail?id=117kBU2vFBqEXbrf2q7Kua8R7BSbUNCsa&sz=w400"
-            alt="Internadda Logo"
-            className="relative w-28 h-28 object-contain animate-logo-iconic drop-shadow-[0_35px_60px_rgba(0,0,0,0.8)]"
-          />
-        </div>
-
-        <style>{`
-          @keyframes logoIconic {
-            0%   { opacity:0; transform:scale(0.7) translateY(12px); }
-            60%  { opacity:1; transform:scale(1.05) translateY(0); }
-            100% { opacity:1; transform:scale(1); }
-          }
-
-          .animate-logo-iconic {
-            animation: logoIconic 1.1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-          }
-        `}</style>
+        {/* Logo */}
+        <img
+          src="https://drive.google.com/thumbnail?id=117kBU2vFBqEXbrf2q7Kua8R7BSbUNCsa&sz=w400"
+          alt="Internadda Logo"
+          className="relative w-28 h-28 object-contain animate-logo-iconic drop-shadow-[0_30px_55px_rgba(0,0,0,0.8)]"
+        />
       </div>
-    );
-  }
+
+      <style>{`
+        @keyframes logoIconic {
+          0%   { opacity:0; transform:scale(0.6) rotate(-6deg); }
+          60%  { opacity:1; transform:scale(1.08) rotate(1deg); }
+          100% { opacity:1; transform:scale(1) rotate(0deg); }
+        }
+
+        @keyframes glowPulse {
+          0%,100% { opacity:0.6; transform:scale(1); }
+          50%     { opacity:1; transform:scale(1.15); }
+        }
+
+        .animate-logo-iconic {
+          animation: logoIconic 1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+
+        .animate-glow-pulse {
+          animation: glowPulse 2.5s ease-in-out infinite;
+        }
+      `}</style>
+    </div>
+  );
+}
 
   const handleLogout = () => {
     localStorage.removeItem('user');
