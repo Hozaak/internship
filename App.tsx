@@ -9,6 +9,16 @@ import TestEngine from './pages/TestEngine';
 import ResultPage from './pages/ResultPage';
 import Dashboard from './pages/Dashboard';
 import { UserProfile } from './types';
+// Add these imports
+import Tests from './pages/Tests';
+import Profile from './pages/Profile';
+import Settings from './pages/Settings';
+
+// Update Routes section to include:
+<Route path="/tests" element={<Tests />} />
+<Route path="/profile" element={<Profile />} />
+<Route path="/settings" element={<Settings />} />
+<Route path="/add-credits" element={<div className="max-w-4xl mx-auto px-4 lg:px-8 py-12"><h1 className="text-2xl font-bold">Add Credits - Coming Soon</h1></div>} />
 
 const AdminPanel = () => (
   <div className="flex items-center justify-center min-h-[60vh]">
