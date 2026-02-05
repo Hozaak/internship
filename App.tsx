@@ -13,27 +13,6 @@ import Profile from './pages/Profile';
 import Settings from './pages/Settings';
 import { UserProfile } from './types';
 
-const AdminPanel = () => (
-  <div className="flex items-center justify-center min-h-[60vh]">
-    <h1 className="text-2xl font-bold">Admin Dashboard - Access Granted</h1>
-  </div>
-);
-
-const AddCredits = () => (
-  <div className="max-w-4xl mx-auto px-4 lg:px-8 py-20">
-    <div className="bg-white rounded-[40px] border border-slate-100 shadow-xl p-12 text-center">
-      <div className="w-20 h-20 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-6 text-3xl">
-        💰
-      </div>
-      <h1 className="text-3xl font-bold text-slate-900 mb-4">Add Credits</h1>
-      <p className="text-slate-600 mb-8">This feature is coming soon. You'll be able to add credits to apply for internships.</p>
-      <button className="bg-indigo-600 text-white px-8 py-3 rounded-xl font-semibold hover:bg-indigo-700 transition-colors">
-        Notify Me When Available
-      </button>
-    </div>
-  </div>
-);
-
 const App: React.FC = () => {
   const [user, setUser] = useState<UserProfile | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -46,125 +25,123 @@ const App: React.FC = () => {
     
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 2500);
+    }, 2000);
 
     return () => clearTimeout(timer);
   }, []);
 
-  const handleLogout = () => {
-    localStorage.removeItem('user');
-    setUser(null);
-  };
-
   if (isLoading) {
     return (
-      <div className="fixed inset-0 bg-gradient-to-br from-indigo-600 via-purple-600 to-blue-600 flex flex-col items-center justify-center z-[100] animate-in fade-in duration-500 overflow-hidden">
-        {/* Animated background elements */}
-        <div className="absolute inset-0">
-          {[...Array(10)].map((_, i) => (
-            <div
-              key={i}
-              className="absolute w-2 h-2 bg-white/20 rounded-full animate-ping"
-              style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-                animationDelay: `${Math.random() * 2}s`,
-                animationDuration: '3s'
-              }}
-            />
-          ))}
+      <div className="fixed inset-0 bg-gradient-to-br from-slate-900 via-slate-800 to-indigo-900 flex flex-col items-center justify-center z-[100] overflow-hidden">
+        {/* Animated background */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute -top-40 -right-40 w-80 h-80 bg-indigo-500/10 rounded-full blur-3xl"></div>
+          <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-blue-500/10 rounded-full blur-3xl"></div>
         </div>
-        
-        <div className="relative z-10 text-center">
-          {/* Logo with pulsing animation */}
+
+        {/* Main loader */}
+        <div className="relative z-10 flex flex-col items-center">
+          {/* Logo with animation */}
           <div className="relative mb-8">
-            <div className="w-32 h-32 bg-white/10 backdrop-blur-sm rounded-3xl flex items-center justify-center mx-auto shadow-2xl animate-pulse-slow">
-              <div className="w-24 h-24 bg-white rounded-2xl flex items-center justify-center shadow-inner">
-                <div className="w-16 h-16 bg-gradient-to-br from-indigo-500 to-blue-500 rounded-xl flex items-center justify-center text-white font-bold text-2xl">
-                  IA
+            <div className="relative w-32 h-32 rounded-3xl bg-gradient-to-br from-white/5 to-white/10 backdrop-blur-xl border border-white/10 shadow-2xl animate-pulse-slow overflow-hidden">
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="w-24 h-24 bg-gradient-to-br from-indigo-600 to-blue-500 rounded-2xl flex items-center justify-center shadow-inner shadow-black/20">
+                  <img 
+                    src="https://drive.google.com/thumbnail?id=117kBU2vFBqEXbrf2q7Kua8R7BSbUNCsa&sz=w400"
+                    alt="Internadda Logo"
+                    className="w-20 h-20 object-contain p-2"
+                    onError={(e) => {
+                      e.currentTarget.outerHTML = `
+                        <div class="w-20 h-20 flex items-center justify-center">
+                          <span class="text-white font-bold text-2xl">IA</span>
+                        </div>
+                      `;
+                    }}
+                  />
                 </div>
               </div>
             </div>
-            {/* Multiple animated rings */}
-            <div className="absolute -inset-8 border-4 border-white/20 rounded-[3rem] animate-ping-slow"></div>
-            <div className="absolute -inset-12 border-4 border-white/10 rounded-[4rem] animate-ping-slower"></div>
+            
+            {/* Rotating ring */}
+            <div className="absolute -inset-8 border-[3px] border-transparent border-t-indigo-500 border-r-blue-500 rounded-full animate-spin-slow"></div>
           </div>
-          
-          {/* Text with gradient animation */}
-          <h1 className="text-5xl font-black tracking-widest mb-4">
-            <span className="bg-gradient-to-r from-white via-cyan-100 to-white bg-clip-text text-transparent animate-gradient">
+
+          {/* Text */}
+          <h1 className="text-4xl md:text-5xl font-black tracking-tight mb-4">
+            <span className="bg-gradient-to-r from-white via-blue-200 to-white bg-clip-text text-transparent bg-[length:200%_auto] animate-gradient">
               INTERNADDA
             </span>
           </h1>
-          <p className="text-white/80 text-sm font-medium mb-8 animate-pulse">
-            Launching Your Career Journey...
+          <p className="text-slate-300 text-sm font-medium tracking-wider uppercase mb-10">
+            Launching Career Excellence
           </p>
-          
+
           {/* Progress bar */}
-          <div className="w-64 h-2 bg-white/20 rounded-full overflow-hidden mx-auto">
-            <div className="h-full bg-gradient-to-r from-cyan-400 via-white to-blue-400 animate-loading-bar rounded-full"></div>
+          <div className="w-64 h-1.5 bg-white/10 rounded-full overflow-hidden mb-8">
+            <div className="h-full bg-gradient-to-r from-indigo-500 via-blue-400 to-indigo-500 rounded-full animate-progress-bar"></div>
           </div>
-          
-          {/* Stats counter */}
-          <div className="mt-8 flex justify-center gap-8 text-white/70 text-xs">
+
+          {/* Stats */}
+          <div className="flex gap-8 text-white/60 text-xs">
             <div className="text-center">
-              <div className="text-lg font-bold text-white">50+</div>
-              <div>Companies</div>
+              <div className="text-lg font-bold text-white">30+</div>
+              <div>Active Internships</div>
             </div>
             <div className="text-center">
-              <div className="text-lg font-bold text-white">1000+</div>
-              <div>Interns Placed</div>
+              <div className="text-lg font-bold text-white">7000+</div>
+              <div>Students Placed</div>
             </div>
             <div className="text-center">
-              <div className="text-lg font-bold text-white">95%</div>
+              <div className="text-lg font-bold text-white">98%</div>
               <div>Success Rate</div>
             </div>
           </div>
         </div>
 
         <style>{`
-          @keyframes loading-bar {
-            0% { width: 0%; transform: translateX(-100%); }
-            50% { width: 100%; transform: translateX(0); }
-            100% { width: 0%; transform: translateX(100%); }
-          }
           @keyframes gradient {
             0%, 100% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
           }
-          @keyframes ping-slow {
-            0%, 100% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.05); opacity: 0; }
+          @keyframes progress-bar {
+            0% { width: 0%; transform: translateX(-100%); }
+            50% { width: 100%; transform: translateX(0%); }
+            100% { width: 0%; transform: translateX(100%); }
           }
-          @keyframes ping-slower {
-            0%, 100% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.1); opacity: 0; }
+          @keyframes spin-slow {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
           }
-          .animate-loading-bar {
-            animation: loading-bar 2s ease-in-out infinite;
-            background-size: 200% 100%;
+          @keyframes pulse-slow {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.9; }
           }
           .animate-gradient {
             animation: gradient 3s ease infinite;
-            background-size: 200% 200%;
+            background-size: 200% 100%;
           }
-          .animate-ping-slow {
-            animation: ping-slow 3s cubic-bezier(0, 0, 0.2, 1) infinite;
+          .animate-progress-bar {
+            animation: progress-bar 2s ease-in-out infinite;
           }
-          .animate-ping-slower {
-            animation: ping-slower 4s cubic-bezier(0, 0, 0.2, 1) infinite;
+          .animate-spin-slow {
+            animation: spin-slow 8s linear infinite;
           }
           .animate-pulse-slow {
-            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+            animation: pulse-slow 2s ease-in-out infinite;
           }
         `}</style>
       </div>
     );
   }
 
+  const handleLogout = () => {
+    localStorage.removeItem('user');
+    setUser(null);
+  };
+
   return (
     <Router>
-      <div className="flex flex-col min-h-screen bg-[#F8FAFC] animate-in zoom-in-95 duration-700">
+      <div className="flex flex-col min-h-screen bg-[#F8FAFC]">
         <Header user={user} onLogout={handleLogout} />
         
         <main className="flex-grow">
@@ -181,17 +158,14 @@ const App: React.FC = () => {
             <Route path="/tests" element={<Tests />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/settings" element={<Settings />} />
-            <Route path="/add-credits" element={<AddCredits />} />
+            <Route path="/courses" element={<div className="max-w-7xl mx-auto px-4 py-20"><h1 className="text-3xl font-bold">Courses - Coming Soon</h1></div>} />
+            <Route path="/jobs" element={<div className="max-w-7xl mx-auto px-4 py-20"><h1 className="text-3xl font-bold">Jobs - Coming Soon</h1></div>} />
+            <Route path="/resources" element={<div className="max-w-7xl mx-auto px-4 py-20"><h1 className="text-3xl font-bold">Resources - Coming Soon</h1></div>} />
             
             <Route path="/internship/:id" element={<InternshipDetail />} />
             <Route path="/test/practice/:id" element={<TestEngine type="practice" />} />
             <Route path="/test/real/:id" element={<TestEngine type="real" />} />
             <Route path="/result/:id" element={<ResultPage />} />
-            
-            <Route 
-              path="/admin" 
-              element={user?.email === 'admin@internadda.com' ? <AdminPanel /> : <Navigate to="/" />} 
-            />
           </Routes>
         </main>
 
