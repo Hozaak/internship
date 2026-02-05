@@ -67,22 +67,25 @@ const Header: React.FC<HeaderProps> = ({ user, onLogout }) => {
       }`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between">
-            {/* Logo */}
+            
+            {/* Logo - Clean Naked Version */}
             <div 
               onClick={() => navigate('/')}
-              className="flex items-center gap-3 cursor-pointer group"
+              className="flex items-center gap-3 cursor-pointer"
             >
-    
-                  <img 
-                    src="https://drive.google.com/thumbnail?id=117kBU2vFBqEXbrf2q7Kua8R7BSbUNCsa&sz=w400"
-                    alt="Internadda"
-                    className="w-8 h-8 sm:w-10 sm:h-10 object-contain p-1"
-                    onError={(e) => {
-                      e.currentTarget.style.display = 'none';
-                    }}
-                  />
-                  <span className="text-white font-bold text-lg">IA</span>
-                </div>
+              <div className="w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center">
+                <img 
+                  src="https://drive.google.com/thumbnail?id=117kBU2vFBqEXbrf2q7Kua8R7BSbUNCsa&sz=w400"
+                  alt="Internadda"
+                  className="w-full h-full object-contain"
+                  onError={(e) => {
+                    e.currentTarget.style.display = 'none';
+                    const parent = e.currentTarget.parentElement;
+                    if (parent) {
+                      parent.innerHTML = '<span class="text-slate-900 font-bold text-xl">IA</span>';
+                    }
+                  }}
+                />
               </div>
               <div className="hidden sm:block">
                 <span className="font-bold text-xl text-slate-900 tracking-tight">
@@ -97,9 +100,7 @@ const Header: React.FC<HeaderProps> = ({ user, onLogout }) => {
             {/* Desktop Navigation */}
             <nav className="hidden lg:flex items-center gap-1">
               {navItems.map((item) => {
-                // Glow logic: 
-                // 1. Exact path match OR
-                // 2. If it's a hash path, ensure the current hash matches exactly.
+                // Glow logic: Active only if current hash matches or exact path matches with no hash
                 const isActive = item.path.includes('#') 
                   ? location.hash === `#${item.path.split('#')[1]}` 
                   : location.pathname === item.path && location.hash === '';
@@ -186,12 +187,9 @@ const Header: React.FC<HeaderProps> = ({ user, onLogout }) => {
               <div className="p-6 border-b border-slate-100">
                 <div className="flex items-center justify-between mb-6">
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-600 to-blue-600 flex items-center justify-center">
-                      <span className="text-white font-bold">IA</span>
-                    </div>
                     <span className="font-bold text-lg text-slate-900">Internadda</span>
                   </div>
-                  <button onClick={() => setMobileMenuOpen(false)} className="text-2xl">×</button>
+                  <button onClick={() => setMobileMenuOpen(false)} className="text-2xl text-slate-500">×</button>
                 </div>
 
                 <div className="space-y-2">
