@@ -100,5 +100,3 @@ const handleAuth = async (e: React.FormEvent) => {
   );
 };
 
-
-export default AuthPage;
