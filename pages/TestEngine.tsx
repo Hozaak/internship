@@ -1,10 +1,144 @@
-// Add responsive styles and mobile-specific improvements
+import React, { useState, useEffect, useRef } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { MOCK_QUESTIONS } from '../constants';
+
+interface TestEngineProps {
+  type: 'practice' | 'real';
+}
+
 const TestEngine: React.FC<TestEngineProps> = ({ type }) => {
-  // ... existing code ...
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const [currentIdx, setCurrentIdx] = useState(0);
+  const [answers, setAnswers] = useState<Record<string, number>>({});
+  const [timeLeft, setTimeLeft] = useState(30 * 60); // 30 mins
+  const [warningCount, setWarningCount] = useState(0);
+  const [isTestStarted, setIsTestStarted] = useState(false);
+  const [isPaletteOpen, setIsPaletteOpen] = useState(false);
+  
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!isTestStarted) return;
+
+    const timer = setInterval(() => {
+      setTimeLeft(prev => {
+        if (prev <= 1) {
+          clearInterval(timer);
+          handleSubmit();
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        setWarningCount(prev => prev + 1);
+        alert("TAB SWITCH DETECTED! Warning " + (warningCount + 1) + "/3. Switching again will auto-submit.");
+      }
+    };
+
+    const handleKeydown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && type === 'real') {
+        e.preventDefault();
+        alert("Exiting fullscreen is not allowed during the real test.");
+      }
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    window.addEventListener("keydown", handleKeydown);
+
+    return () => {
+      clearInterval(timer);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+      window.removeEventListener("keydown", handleKeydown);
+    };
+  }, [isTestStarted, warningCount, type]);
+
+  useEffect(() => {
+    if (warningCount >= 3) {
+      alert("Test auto-submitted due to multiple tab switching violations.");
+      handleSubmit();
+    }
+  }, [warningCount]);
+
+  const handleSubmit = () => {
+    let score = 0;
+    MOCK_QUESTIONS.forEach(q => {
+      if (answers[q.id] === q.correctAnswer) {
+        score++;
+      }
+    });
+    
+    const finalScore = (score / MOCK_QUESTIONS.length) * 100;
+    navigate(`/result/${id}?score=${finalScore}&type=${type}`);
+  };
+
+  const startTest = () => {
+    if (type === 'real' && !document.fullscreenElement) {
+      containerRef.current?.requestFullscreen().catch(err => {
+        console.error("Error enabling fullscreen", err);
+      });
+    }
+    setIsTestStarted(true);
+  };
+
+  if (!isTestStarted) {
+    return (
+      <div className="max-w-3xl mx-auto px-4 py-20">
+        <div className="bg-white p-12 rounded-3xl shadow-xl border border-slate-100 text-center space-y-8">
+          <div className="w-20 h-20 bg-indigo-100 rounded-full flex items-center justify-center mx-auto text-3xl">
+            {type === 'real' ? '🔒' : '✎'}
+          </div>
+          <h2 className="text-3xl font-bold text-slate-900">
+            {type === 'real' ? 'Secure Skill Assessment' : 'Practice Test'}
+          </h2>
+          <div className="grid grid-cols-3 gap-4 text-sm font-medium text-slate-500">
+            <div className="p-4 bg-slate-50 rounded-2xl">
+              <span className="block text-indigo-600 text-xl font-bold mb-1">25</span>
+              Questions
+            </div>
+            <div className="p-4 bg-slate-50 rounded-2xl">
+              <span className="block text-indigo-600 text-xl font-bold mb-1">30m</span>
+              Duration
+            </div>
+            <div className="p-4 bg-slate-50 rounded-2xl">
+              <span className="block text-indigo-600 text-xl font-bold mb-1">50%</span>
+              Passing Score
+            </div>
+          </div>
+          <div className="text-left bg-amber-50 p-6 rounded-2xl border border-amber-100 space-y-3">
+            <h4 className="font-bold text-amber-900 flex items-center gap-2">
+              ⚠️ Anti-Cheat Instructions:
+            </h4>
+            <ul className="text-sm text-amber-800 space-y-2 list-disc pl-5">
+              <li>Do not switch tabs or windows.</li>
+              <li>Test will automatically submit after 3 warnings.</li>
+              <li>Ensure a stable internet connection.</li>
+              <li>The test will open in full-screen mode.</li>
+            </ul>
+          </div>
+          <button 
+            onClick={startTest}
+            className="w-full bg-indigo-600 text-white py-4 rounded-2xl font-bold text-lg shadow-xl shadow-indigo-100 hover:bg-indigo-700 transition-all active:scale-95"
+          >
+            Start Assessment
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  const currentQ = MOCK_QUESTIONS[currentIdx];
+  const formatTime = (seconds: number) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins}:${secs.toString().padStart(2, '0')}`;
+  };
 
   return (
     <div ref={containerRef} className="min-h-screen bg-[#F8FAFC] flex flex-col">
-      {/* Mobile Optimized Header */}
       <div className="bg-white border-b border-slate-200 px-4 md:px-8 py-3 flex items-center justify-between sticky top-0 z-10">
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 md:w-10 md:h-10 rounded-lg bg-gradient-to-r from-indigo-600 to-purple-600 flex items-center justify-center">
@@ -16,13 +150,11 @@ const TestEngine: React.FC<TestEngineProps> = ({ type }) => {
         </div>
         
         <div className="flex items-center gap-3 md:gap-6">
-          {/* Mobile Timer */}
           <div className={`flex items-center gap-2 px-3 md:px-4 py-1.5 md:py-2 rounded-lg md:rounded-xl border-2 ${timeLeft < 300 ? 'border-red-500 text-red-600 animate-pulse' : 'border-slate-200 text-slate-700'}`}>
             <span className="text-xs md:text-sm">⏱</span>
             <span className="font-mono font-bold text-sm md:text-base">{formatTime(timeLeft)}</span>
           </div>
           
-          {/* Mobile Submit Button */}
           <button 
             onClick={handleSubmit}
             className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-4 md:px-6 py-1.5 md:py-2 rounded-lg md:rounded-xl font-bold text-xs md:text-sm shadow-md hover:shadow-lg"
@@ -32,12 +164,9 @@ const TestEngine: React.FC<TestEngineProps> = ({ type }) => {
         </div>
       </div>
 
-      {/* Mobile Responsive Content */}
       <div className="flex-grow flex flex-col lg:flex-row p-4 md:p-8 gap-4 md:gap-8 max-w-7xl mx-auto w-full">
-        {/* Question Panel - Full width on mobile */}
         <div className="flex-grow space-y-6">
           <div className="bg-white p-6 md:p-10 rounded-2xl md:rounded-3xl border border-slate-100 shadow-sm min-h-[400px] md:min-h-[500px] flex flex-col">
-            {/* Mobile Question Header */}
             <div className="flex justify-between items-center mb-6">
               <span className="bg-slate-100 text-slate-600 px-3 py-1 rounded-full text-xs font-bold tracking-wider">
                 Q{currentIdx + 1}/25
@@ -49,12 +178,10 @@ const TestEngine: React.FC<TestEngineProps> = ({ type }) => {
               )}
             </div>
             
-            {/* Question Text */}
             <h3 className="text-lg md:text-2xl font-bold text-slate-800 leading-tight mb-6 md:mb-10">
               {currentQ.text}
             </h3>
 
-            {/* Mobile Optimized Options */}
             <div className="space-y-3 md:space-y-4 flex-grow">
               {currentQ.options.map((opt, i) => (
                 <button
@@ -78,7 +205,6 @@ const TestEngine: React.FC<TestEngineProps> = ({ type }) => {
               ))}
             </div>
 
-            {/* Mobile Navigation */}
             <div className="mt-6 md:mt-auto pt-6 md:pt-12 flex justify-between items-center">
               <button
                 disabled={currentIdx === 0}
@@ -88,7 +214,6 @@ const TestEngine: React.FC<TestEngineProps> = ({ type }) => {
                 ← Prev
               </button>
               
-              {/* Mobile Progress Dots */}
               <div className="flex gap-1 md:hidden">
                 {MOCK_QUESTIONS.slice(0, 5).map((_, idx) => (
                   <div
@@ -118,14 +243,10 @@ const TestEngine: React.FC<TestEngineProps> = ({ type }) => {
           </div>
         </div>
 
-        {/* Mobile Bottom Navigation */}
         <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 p-4 shadow-lg">
           <div className="flex justify-between items-center">
             <button
-              onClick={() => {
-                // Show question palette in modal for mobile
-                setIsPaletteOpen(true);
-              }}
+              onClick={() => setIsPaletteOpen(true)}
               className="flex items-center gap-2 text-slate-700"
             >
               <div className="w-8 h-8 rounded-lg bg-indigo-50 flex items-center justify-center">
@@ -144,7 +265,6 @@ const TestEngine: React.FC<TestEngineProps> = ({ type }) => {
         </div>
       </div>
 
-      {/* Mobile Palette Modal */}
       {isPaletteOpen && (
         <div className="fixed inset-0 bg-black/50 z-50 flex items-end lg:hidden">
           <div className="bg-white w-full rounded-t-2xl p-6 max-h-[70vh] overflow-y-auto">
@@ -179,3 +299,6 @@ const TestEngine: React.FC<TestEngineProps> = ({ type }) => {
     </div>
   );
 };
+
+// Make sure this line is at the end
+export default TestEngine;
