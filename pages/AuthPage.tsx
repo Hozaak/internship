@@ -31,7 +31,7 @@ const AuthPage: React.FC<{ mode: 'login' | 'signup', setUser: (user: any) => voi
           }
         });
         if (error) throw error;
-        alert("Registration successful! Please check your email for confirmation.");
+        alert("Registration successful! Welcome to Internadda.");
       } else {
         const { data, error } = await supabase.auth.signInWithPassword({
           email: formData.email,
