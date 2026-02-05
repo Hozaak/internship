@@ -20,61 +20,53 @@ const App: React.FC = () => {
   useEffect(() => {
     const initApp = async () => {
       const savedUser = localStorage.getItem('user');
-      if (savedUser) {
-        setUser(JSON.parse(savedUser));
-      }
-
-      // Real startup-like loading
-      await new Promise(res => setTimeout(res, 1200));
+      if (savedUser) setUser(JSON.parse(savedUser));
+      await new Promise(res => setTimeout(res, 1800));
       setIsLoading(false);
     };
-
     initApp();
   }, []);
 
   if (isLoading) {
     return (
-      <div className="fixed inset-0 bg-gradient-to-br from-slate-900 via-slate-800 to-indigo-900 flex flex-col items-center justify-center z-[100] overflow-hidden">
-        {/* Background Glow */}
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute -top-40 -right-40 w-96 h-96 bg-indigo-500/10 rounded-full blur-3xl"></div>
-          <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl"></div>
-        </div>
+      <div className="fixed inset-0 bg-gradient-to-br from-black via-slate-900 to-indigo-900 flex items-center justify-center z-[100] overflow-hidden">
 
-        {/* Loader Content */}
+        {/* Ambient Lights */}
+        <div className="absolute w-[500px] h-[500px] bg-indigo-500/20 blur-[120px] rounded-full top-[-200px] left-[-200px]" />
+        <div className="absolute w-[400px] h-[400px] bg-blue-500/20 blur-[120px] rounded-full bottom-[-150px] right-[-150px]" />
+
+        {/* Cinematic Loader */}
         <div className="relative z-10 flex flex-col items-center text-center">
-          {/* Logo */}
-{/* Logo */}
-<div className="relative mb-12 flex items-center justify-center">
-  {/* Soft ambient glow */}
-  <div className="absolute w-40 h-40 bg-indigo-500/20 blur-[80px] rounded-full"></div>
 
-  {/* Floating naked logo */}
-  <img
-    src="https://drive.google.com/thumbnail?id=117kBU2vFBqEXbrf2q7Kua8R7BSbUNCsa&sz=w400"
-    alt="Internadda Logo"
-    className="relative w-24 h-24 object-contain animate-logo-float drop-shadow-[0_20px_35px_rgba(0,0,0,0.6)]"
-  />
-</div>
+          {/* LOGO FIRST */}
+          <div className="relative mb-10 animate-logo-reveal">
+            <div className="absolute w-44 h-44 bg-indigo-500/30 blur-[90px] rounded-full"></div>
+            <img
+              src="https://drive.google.com/thumbnail?id=117kBU2vFBqEXbrf2q7Kua8R7BSbUNCsa&sz=w400"
+              alt="Internadda Logo"
+              className="relative w-28 h-28 object-contain drop-shadow-[0_30px_50px_rgba(0,0,0,0.7)]"
+            />
+          </div>
 
-          {/* Brand Text */}
-          <h1 className="text-4xl md:text-5xl font-black tracking-tight mb-3">
+          {/* BRAND */}
+          <h1 className="text-4xl md:text-6xl font-black tracking-tight mb-3 opacity-0 animate-text-reveal">
             <span className="bg-gradient-to-r from-white via-blue-200 to-white bg-clip-text text-transparent animate-gradient">
               INTERNADDA
             </span>
           </h1>
 
-          <p className="text-slate-300 text-sm font-medium tracking-wider uppercase mb-8">
+          {/* TAGLINE */}
+          <p className="text-slate-300 text-sm font-medium tracking-widest uppercase mb-8 opacity-0 animate-tagline-reveal">
             Building India’s Most Trusted Internship Network
           </p>
 
-          {/* Progress Bar */}
-          <div className="w-64 h-1.5 bg-white/10 rounded-full overflow-hidden mb-6">
-            <div className="h-full bg-gradient-to-r from-indigo-500 via-blue-400 to-indigo-500 rounded-full animate-progress-bar"></div>
+          {/* PROGRESS */}
+          <div className="w-64 h-1.5 bg-white/10 rounded-full overflow-hidden mb-6 opacity-0 animate-bar-reveal">
+            <div className="h-full bg-gradient-to-r from-indigo-500 via-blue-400 to-indigo-500 animate-progress-bar"></div>
           </div>
 
-          {/* Trust Stats */}
-          <div className="flex gap-10 text-slate-300 text-xs mb-6">
+          {/* STATS */}
+          <div className="flex gap-10 text-slate-300 text-xs mb-6 opacity-0 animate-stats-reveal">
             <div>
               <div className="text-xl font-bold text-white">85+</div>
               <div>Hiring Partners</div>
@@ -89,7 +81,7 @@ const App: React.FC = () => {
             </div>
           </div>
 
-          <div className="text-[11px] text-slate-500 tracking-wide">
+          <div className="text-[11px] text-slate-500 tracking-wide opacity-0 animate-footer-reveal">
             🔐 Secured Platform · AI Verified Profiles · All Systems Operational 🚀
           </div>
         </div>
@@ -104,18 +96,41 @@ const App: React.FC = () => {
             50% {width:100%;transform:translateX(0)}
             100% {width:0%;transform:translateX(100%)}
           }
-          @keyframes spin-slow {
-            0% {transform:rotate(0deg)}
-            100% {transform:rotate(360deg)}
+          @keyframes logoReveal {
+            0% { opacity:0; transform:scale(0.6); }
+            100% { opacity:1; transform:scale(1); }
           }
-          @keyframes pulse-slow {
-            0%,100% {transform:scale(1);opacity:1}
-            50% {transform:scale(1.05);opacity:.9}
+          @keyframes textReveal {
+            0% { opacity:0; transform:translateY(12px); }
+            100% { opacity:1; transform:translateY(0); }
           }
+
           .animate-gradient {animation:gradient 3s ease infinite;background-size:200% 100%}
           .animate-progress-bar {animation:progress-bar 3s ease-in-out infinite}
-          .animate-spin-slow {animation:spin-slow 14s linear infinite}
-          .animate-pulse-slow {animation:pulse-slow 2.4s ease-in-out infinite}
+
+          .animate-logo-reveal {
+            animation:logoReveal 0.9s ease-out forwards;
+          }
+          .animate-text-reveal {
+            animation:textReveal 0.8s ease-out forwards;
+            animation-delay:0.6s;
+          }
+          .animate-tagline-reveal {
+            animation:textReveal 0.8s ease-out forwards;
+            animation-delay:1s;
+          }
+          .animate-bar-reveal {
+            animation:textReveal 0.8s ease-out forwards;
+            animation-delay:1.4s;
+          }
+          .animate-stats-reveal {
+            animation:textReveal 0.8s ease-out forwards;
+            animation-delay:1.8s;
+          }
+          .animate-footer-reveal {
+            animation:textReveal 0.8s ease-out forwards;
+            animation-delay:2.2s;
+          }
         `}</style>
       </div>
     );
