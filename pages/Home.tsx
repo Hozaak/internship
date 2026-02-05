@@ -199,6 +199,21 @@ const Home: React.FC = () => {
               <p className="text-slate-500 max-w-sm mx-auto">Try selecting a different category</p>
             </div>
           )}
+
+          {/* View All Button */}
+          {filteredInternships.length > 0 && (
+            <div className="mt-12 text-center">
+              <Link 
+                to="/internships"
+                className="inline-flex items-center gap-2 px-8 py-3 bg-white border-2 border-slate-200 text-slate-700 font-semibold rounded-xl hover:border-indigo-600 hover:text-indigo-600 transition-all group shadow-sm hover:shadow-md"
+              >
+                View All Internships
+                <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+              </Link>
+            </div>
+          )}
         </div>
 
         {/* Trust Indicators */}
