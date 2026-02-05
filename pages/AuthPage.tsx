@@ -12,34 +12,54 @@ const AuthPage: React.FC<{ mode: 'login' | 'signup', setUser: (user: any) => voi
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({ email: '', password: '', name: '' });
 
-  const handleAuth = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
+const handleAuth = async (e: React.FormEvent) => {
+  e.preventDefault();
+  setLoading(true);
 
-    try {
-      if (mode === 'signup') {
-        const { data, error } = await supabase.auth.signUp({
-          email: formData.email,
-          password: formData.password,
-          options: { data: { full_name: formData.name } }
-        });
-        if (error) throw error;
-        alert("Check your email for confirmation!");
-      } else {
-        const { data, error } = await supabase.auth.signInWithPassword({
-          email: formData.email,
-          password: formData.password
-        });
-        if (error) throw error;
-        setUser(data.user);
-        navigate('/dashboard');
-      }
-    } catch (err: any) {
-      alert(err.message);
-    } finally {
-      setLoading(false);
+  try {
+    if (mode === 'signup') {
+      const { data, error } = await supabase.auth.signUp({
+        email: formData.email,
+        password: formData.password,
+        options: { 
+          data: { 
+            full_name: formData.name,
+            // Add other registration fields here so they save to metadata
+            education: 'Graduate', 
+            domain: 'Tech'
+          } 
+        }
+      });
+      if (error) throw error;
+      alert("Registration successful! Please check your email for confirmation.");
+    } else {
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: formData.email,
+        password: formData.password
+      });
+      if (error) throw error;
+
+      // Map Supabase auth data to your UserProfile type for a unique dashboard
+      const loggedInUser: UserProfile = {
+        id: data.user.id,
+        name: data.user.user_metadata.full_name || 'User',
+        email: data.user.email || '',
+        phone: data.user.user_metadata.phone || '+91 0000000000',
+        education: data.user.user_metadata.education || 'N/A',
+        domain: data.user.user_metadata.domain || 'N/A',
+        unlockedRealTest: false
+      };
+
+      setUser(loggedInUser);
+      localStorage.setItem('user', JSON.stringify(loggedInUser));
+      navigate('/dashboard');
     }
-  };
+  } catch (err: any) {
+    alert(err.message);
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <div className="min-h-screen bg-[#F8FAFC] flex items-center justify-center p-6">
