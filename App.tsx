@@ -45,17 +45,16 @@ const App: React.FC = () => {
         <div className="relative z-10 flex flex-col items-center text-center">
           {/* Logo */}
 {/* Logo */}
-<div className="relative mb-10">
-  <div className="relative w-32 h-32 rounded-3xl bg-white/5 backdrop-blur-xl border border-white/10 shadow-2xl animate-pulse-slow flex items-center justify-center">
-    <div className="w-24 h-24 bg-gradient-to-br from-indigo-600 to-blue-500 rounded-2xl flex items-center justify-center shadow-inner">
-      <img
-        src="https://drive.google.com/thumbnail?id=117kBU2vFBqEXbrf2q7Kua8R7BSbUNCsa&sz=w400"
-        alt="Internadda Logo"
-        className="w-20 h-20 object-contain p-2"
-      />
-    </div>
-  </div>
-  <div className="absolute -inset-6 border-[3px] border-transparent border-t-indigo-500 border-r-blue-500 rounded-full animate-spin-slow"></div>
+<div className="relative mb-12 flex items-center justify-center">
+  {/* Soft ambient glow */}
+  <div className="absolute w-40 h-40 bg-indigo-500/20 blur-[80px] rounded-full"></div>
+
+  {/* Floating naked logo */}
+  <img
+    src="https://drive.google.com/thumbnail?id=117kBU2vFBqEXbrf2q7Kua8R7BSbUNCsa&sz=w400"
+    alt="Internadda Logo"
+    className="relative w-24 h-24 object-contain animate-logo-float drop-shadow-[0_20px_35px_rgba(0,0,0,0.6)]"
+  />
 </div>
 
           {/* Brand Text */}
