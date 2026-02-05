@@ -25,9 +25,8 @@ const Header: React.FC<HeaderProps> = ({ user, onLogout }) => {
   const navItems = [
     { label: 'Home', path: '/' },
     { label: 'Internships', path: '/internships' },
-    { label: 'Practice Tests', path: '/tests' },
-    { label: 'Hiring Process', path: '/process' },
-    { label: 'Success Stories', path: '/stories' },
+    { label: 'Courses', path: '#' },
+    { label: 'Jobs', path: '#' },
     { label: 'About Us', path: '/about' },
   ];
 
@@ -57,7 +56,7 @@ const Header: React.FC<HeaderProps> = ({ user, onLogout }) => {
             >
               {/* Logo Image */}
               <div className="relative">
-                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 flex items-center justify-center overflow-hidden shadow-lg group-hover:shadow-xl transition-shadow duration-300">
+            
                   <img 
                     src="https://drive.google.com/thumbnail?id=117kBU2vFBqEXbrf2q7Kua8R7BSbUNCsa&sz=w400"
                     alt="Internadda"
@@ -70,11 +69,8 @@ const Header: React.FC<HeaderProps> = ({ user, onLogout }) => {
                     }}
                   />
                 </div>
-                {/* MSME Badge */}
-                <div className="absolute -bottom-1 -right-1 w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-gradient-to-r from-red-500 to-orange-500 flex items-center justify-center shadow-md">
-                  <span className="text-[8px] sm:text-[10px] font-bold text-white">MSME</span>
-                </div>
-              </div>
+
+    
 
               {/* Brand Name - Always Visible */}
               <div className="flex flex-col">
