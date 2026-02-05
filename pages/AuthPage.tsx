@@ -5,7 +5,11 @@ import { createClient } from '@supabase/supabase-js'; // Assuming supabase clien
 import { UserProfile } from '../types';
 
 // Supabase Initialization (Normally in a separate config file)
-const supabase = createClient(process.env.SUPABASE_URL!, process.env.SUPABASE_ANON_KEY!);
+
+const supabase = createClient(
+  import.meta.env.VITE_SUPABASE_URL, 
+  import.meta.env.VITE_SUPABASE_ANON_KEY
+);
 
 const AuthPage: React.FC<{ mode: 'login' | 'signup', setUser: (user: any) => void }> = ({ mode, setUser }) => {
   const navigate = useNavigate();
@@ -100,3 +104,4 @@ const handleAuth = async (e: React.FormEvent) => {
   );
 };
 
+export default AuthPage;
